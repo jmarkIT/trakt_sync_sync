@@ -14,3 +14,6 @@ r = requests.get(url, headers=headers)
 print(r.status_code)
 
 print(client_id)
+
+if __name__ == 'main':
+    main()

@@ -11,6 +11,9 @@ parameters = {
     "client_id": client_id
 }
 
-r = requests.get(url, headers=headers, params=parameters)
+def main: 
+    r = requests.get(url, headers=headers, params=parameters)
+    print(r.status_code)
 
-print(r.status_code)
+if __name__ == 'main':
+    main()
