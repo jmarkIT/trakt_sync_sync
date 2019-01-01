@@ -1,0 +1,6 @@
+trakt/
+*.code-workspace
+.idea/
+.vscode/
+client.py
+__pycache__/
