@@ -26,8 +26,6 @@ def device_code():
 
 def get_token(code):
 
-    get_token_status = ""
-
     url = "https://api.trakt.tv/oauth/device/token"
 
     params = {
@@ -49,11 +47,6 @@ def get_token(code):
             refresh_token = output["refresh_token"]
 
             print("Your access token is {}\nand your refresh token is {}".format(access_token, refresh_token))
-            
-    
-    print(code)
-    #try:
-    #    pass
 
 if __name__ == '__main__':
     get_token(device_code())
