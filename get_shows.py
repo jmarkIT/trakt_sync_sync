@@ -16,12 +16,6 @@ def main(url, headers):
     print(client_id)
     print(r.content)
 
-def get_profile(url, headers):
-    r = requests.get(url, headers=headers)
-    print(r.status_code)
-    print(client_id)
-    print(r.content)
-
 if __name__ == '__main__':
     main(url, headers)
     get_profile(" https://api.trakt.tv/users/dukkhalatte", headers)
