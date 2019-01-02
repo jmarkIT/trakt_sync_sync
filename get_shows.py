@@ -10,18 +10,11 @@ headers = {
     "Authorization": "Bearer {}".format(access_token)
 }
 
-def main(url, headers):
-    r = requests.get(url, headers=headers)
-    print(r.status_code)
-    print(client_id)
-    print(r.content)
-
-def get_profile(url, headers):
+def get_shows(url, headers):
     r = requests.get(url, headers=headers)
     print(r.status_code)
     print(client_id)
     print(r.content)
 
 if __name__ == '__main__':
-    main(url, headers)
-    get_profile(" https://api.trakt.tv/users/dukkhalatte", headers)
+    get_shows(url, headers)
