@@ -9,6 +9,10 @@ headers = {
 }
 
 def device_code():
+    # This function POSTs to the trakt.tv api to get a code
+    # for OAuth setup
+    # Returns a device code
+    
     params = {
     "client_id": client_id
     }
@@ -25,7 +29,9 @@ def device_code():
 
 
 def get_token(code):
-
+	# Takes a device code and uses it to get access and
+	# refresh tokens for the users account
+	
     url = "https://api.trakt.tv/oauth/device/token"
 
     params = {
@@ -35,8 +41,12 @@ def get_token(code):
     }
 
     while get_token_status != 200:
+        #Sleep for the default polling interval of 5 seconds
         time.sleep(5)
         
+        #This is really sloppy right now. I'm basically
+        #ignoring any status codes that aren't 200 and
+        #I'm not stopping after the 300 second timeout
         r = requests.post(url, params=params, headers=headers)
         print(r.status_code)
         get_token_status = r.status_code
@@ -45,7 +55,9 @@ def get_token(code):
             output = json.loads(r.content)
             access_token = output["access_token"]
             refresh_token = output["refresh_token"]
-
+            
+            #Just printing out the tokens here which is dumb
+            #but it serves my purposes temporarily
             print("Your access token is {}\nand your refresh token is {}".format(access_token, refresh_token))
 
 if __name__ == '__main__':
