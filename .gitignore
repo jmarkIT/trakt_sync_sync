@@ -4,3 +4,4 @@ trakt/
 .vscode/
 client.py
 __pycache__/
+*.pyc
