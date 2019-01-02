@@ -1,4 +1,6 @@
-import requests, json, time
+import requests
+import json
+import time
 from client import client_id, client_secret
 
 
