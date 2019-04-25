@@ -35,7 +35,8 @@ def get_token(code):
 	# refresh tokens for the users account
 	
     url = "https://api.trakt.tv/oauth/device/token"
-
+    get_token_status = 0
+		
     params = {
         "client_id": client_id,
         "client_secret": client_secret,
