@@ -18,10 +18,6 @@ headers = {
 
 def get_shows(url, headers):
     r = requests.get(url, headers=headers)
-    # print(r.status_code)
-    # print(client_id)
-    # print(json.loads(r.content))
-    # return json.loads(r.content))
     return r.content
 
 
@@ -31,9 +27,6 @@ def get_progress(url, headers):
 
 
 if __name__ == '__main__':
-    # get_shows(url, headers)
-    # show_sync_data = get_shows(get_shows_url, headers)
-
     show_progress_data = get_progress(get_progress_url, headers)
 
     print(show_progress_data)
