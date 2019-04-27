@@ -30,10 +30,22 @@ def create_table(conn, create_table_sql):
 		print(e)
 		
 		
+def insert_row(conn, show_stub, show_name, season, episode, watched_status, hidden_status):
+	p_key = f"{show_stub}s{season}e{episode}"
+	
+	insert_statement = f"INSERT INTO show (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES ({p_key}, {show_stub}, {show_name}, {season}, {episode}, {watched_status}, {hidden_status})"
+	
+	try:
+		c = conn.cursor()
+		c.execute(insert_statement)
+	except Error as e:
+		print(e)
+		
+	
+
 if __name__ == "__main__":
 	create_table_sql = f'CREATE TABLE {table_name} ({id_column} {field_type} PRIMARY KEY)'
 	
 	conn = create_connection(sqlite_file)
 	
 	create_table(conn, create_table_sql) 
-
