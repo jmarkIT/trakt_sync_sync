@@ -61,15 +61,25 @@ def insert_row(conn, episode_info):
 		c = conn.cursor()
 		c.execute(insert_statement)
 	except Error as e:
-		print(e)
+		print(f'Error in insert_row(): {e}')
 		
 
-def update_watched_status(conn, episode_info):
+def update_status(conn, episode_info, status="watched_status"):
 	""" update the watched status on a given row
 	:param conn: Connection object
 	:param episode_info: dictionary of episode information
+	:param status: string, either "watched_status" or "hidden_status". Defaults to "watched_status"
 	"""
 	p_key = get_p_key(episode_info)
+	
+	status_update = f'UPDATE shows SET watched_status = {episode_info[status]} WHERE p_key = "{p_key}";'
+	
+	try:
+		c = conn.cursor()
+		c.execute(status_update)
+	except Error as e:
+		print(f'SQL error in status_update(): {e}')
+		print(f'Attempted to run: {status_update}')
 	
 
 if __name__ == "__main__":
@@ -87,6 +97,11 @@ if __name__ == "__main__":
 	
 	for episode in episode_list:
 		insert_row(conn, episode)
+		
+	episode_info_4 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 2, "watched_status" : 1, "hidden_status" : 1 }
+	
+	update_status(conn, episode_info_4)
+	update_status(conn, episode_info_4, "hidden_status")
 	
 	conn.commit()
 	conn.close()
