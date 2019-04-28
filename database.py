@@ -21,6 +21,9 @@ create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{watched_status_column} INTEGER, ' \
 									 f'{hidden_status_column} INTEGER)'
 
+def get_p_key(episode_info):
+	""" create the primary key field by concatenating episode information"""
+	return f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
 
 def create_connection(db_file):
 	""" create a database connection to the SQLite database """
@@ -48,9 +51,9 @@ def create_table(conn, create_table_sql):
 def insert_row(conn, episode_info):
 	""" inserts a row of episode data into the provided database connection
 	:param conn: Connection object
-	:param episode_info: dictionary of episode informaton
+	:param episode_info: dictionary of episode information
 	"""
-	p_key = f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
+	p_key = get_p_key(episode_info)
 	
 	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
 	
@@ -60,6 +63,13 @@ def insert_row(conn, episode_info):
 	except Error as e:
 		print(e)
 		
+
+def update_watched_status(conn, episode_info):
+	""" update the watched status on a given row
+	:param conn: Connection object
+	:param episode_info: dictionary of episode information
+	"""
+	p_key = get_p_key(episode_info)
 	
 
 if __name__ == "__main__":
