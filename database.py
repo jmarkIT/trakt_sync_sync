@@ -46,6 +46,10 @@ def create_table(conn, create_table_sql):
 		
 		
 def insert_row(conn, episode_info):
+	""" inserts a row of episode data into the provided database connection
+	:param conn: Connection object
+	:param episode_info: dictionary of episode informaton
+	"""
 	p_key = f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
 	
 	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
