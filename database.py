@@ -16,10 +16,10 @@ create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{p_key_column} TEXT PRIMARY KEY, ' \
 									 f'{stub_column} TEXT, ' \
 									 f'{show_column} TEXT, ' \
-									 f'{season_column} TEXT, ' \
-									 f'{episode_column} TEXT, ' \
-									 f'{watched_status_column} TEXT, ' \
-									 f'{hidden_status_column} TEXT)'
+									 f'{season_column} INTEGER, ' \
+									 f'{episode_column} INTEGER, ' \
+									 f'{watched_status_column} INTEGER, ' \
+									 f'{hidden_status_column} INTEGER)'
 
 
 def create_connection(db_file):
@@ -45,10 +45,10 @@ def create_table(conn, create_table_sql):
 		print(e)
 		
 		
-def insert_row(conn, show_stub, show_name, season, episode, watched_status, hidden_status):
-	p_key = f"{show_stub}s{season}e{episode}"
+def insert_row(conn, episode_info):
+	p_key = f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
 	
-	insert_statement = f"INSERT INTO show (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES ({p_key}, {show_stub}, {show_name}, {season}, {episode}, {watched_status}, {hidden_status})"
+	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
 	
 	try:
 		c = conn.cursor()
@@ -61,4 +61,11 @@ def insert_row(conn, show_stub, show_name, season, episode, watched_status, hidd
 if __name__ == "__main__":
 	conn = create_connection(sqlite_file)
 	
-	create_table(conn, create_table_sql) 
+	create_table(conn, create_table_sql)
+	
+	episode_info = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 1, "watched_status" : 1, "hidden_status" : 0 }
+	
+	insert_row(conn, episode_info)
+	
+	conn.commit()
+	conn.close()
