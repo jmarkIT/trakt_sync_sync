@@ -63,9 +63,16 @@ if __name__ == "__main__":
 	
 	create_table(conn, create_table_sql)
 	
-	episode_info = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 1, "watched_status" : 1, "hidden_status" : 0 }
+	episode_info_1 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 1, "watched_status" : 1, "hidden_status" : 0 }
 	
-	insert_row(conn, episode_info)
+	episode_info_2 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 2, "watched_status" : 0, "hidden_status" : 0 }
+	
+	episode_info_3 = { "show_stub": "tick_2017", "show_name" : "The Tick", "season" : 2, "episode" : 1, "watched_status" : 1, "hidden_status" : 1 }
+	
+	episode_list = [episode_info_1, episode_info_2, episode_info_3]
+	
+	for episode in episode_list:
+		insert_row(conn, episode)
 	
 	conn.commit()
 	conn.close()
