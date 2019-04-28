@@ -9,3 +9,4 @@ env/
 *.pyproj
 *.sln
 *.sqlite
+*.db
