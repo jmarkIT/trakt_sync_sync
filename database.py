@@ -22,11 +22,15 @@ create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{hidden_status_column} INTEGER)'
 
 def get_p_key(episode_info):
-	""" create the primary key field by concatenating episode information"""
+	""" create the primary key field by concatenating episode information
+	:param episode_info: Dictionary of a single episode
+	"""
 	return f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
 
 def create_connection(db_file):
-	""" create a database connection to the SQLite database """
+	""" create a database connection to the SQLite database 
+	:param db_file: the database file to connect to
+	"""
 	try:
 		conn = sqlite3.connect(db_file)
 	except Error as e:
