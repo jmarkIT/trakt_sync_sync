@@ -84,7 +84,13 @@ def update_status(conn, episode_info, status="watched_status"):
 	except Error as e:
 		print(f'SQL error in status_update(): {e}')
 		print(f'Attempted to run: {status_update}')
-	
+		
+def get_latest_unwatched(show_stub):
+		""" pull the latest episode of a given show that is available to watch and currently unwatched
+		:param show_stub: trak.tv stub of the show to search for
+		"""
+		pass
+		
 
 if __name__ == "__main__":
 	conn = create_connection(sqlite_file)
