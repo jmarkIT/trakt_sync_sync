@@ -29,14 +29,18 @@ def get_p_key(episode_info):
 	
 
 def execute_sql(conn, query):
+	""" execute a provided sql query on a provided connection
+	:param conn: a database connection object
+	:param query: a full sql query to execute
+	"""
 	try:
 			c = conn.cursor()
 			c.execute(query)
-		except Error as e:
+	except Error as e:
 			print(f"SQL error :{e}")
 			print(f"Attempted to run: {query}")
 			
-		return c
+	return c
 
 def create_connection(db_file):
 	""" create a database connection to the SQLite database 
@@ -49,19 +53,6 @@ def create_connection(db_file):
 	
 	return conn
 	
-
-def create_table(conn, create_table_sql):
-	""" create a table from the create_table_sql statement
-	:param conn: Conection Object
-	:param create_table_sql: a CREATE TABLE statement
-	:return:
-	"""
-	try:
-		c = conn.cursor()
-		c.execute(create_table_sql)
-	except Error as e:
-		print(e)
-		
 		
 def insert_row(conn, episode_info):
 	""" inserts a row of episode data into the provided database connection
@@ -89,6 +80,8 @@ def update_status(conn, episode_info, status="watched_status"):
 	
 	status_update = f'UPDATE shows SET watched_status = {episode_info[status]} WHERE p_key = "{p_key}";'
 	
+	execute_sql(conn, status_update)
+	
 	try:
 		c = conn.cursor()
 		c.execute(status_update)
@@ -102,14 +95,7 @@ def get_latest_unwatched(conn, show_stub):
 		"""
 		sql_query = f'SELECT "show_name", "season", "episode" FROM shows WHERE show_stub = "{show_stub}" AND "watched_status" = 0 ORDER BY "season", "episode"'
 		
-		try:
-			c = conn.cursor()
-			c.execute(sql_query)
-		except Error as e:
-			print(f"SQL error in get_latest_unwatched(): {e}")
-			print(f"Attempted to run: {sql_query}")
-		
-		episode_list = c.fetchall()
+		episode_list = execute_sql(conn, sql_query).fetchall()
 		
 		return episode_list
 		
