@@ -26,6 +26,17 @@ def get_p_key(episode_info):
 	:param episode_info: Dictionary of a single episode
 	"""
 	return f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
+	
+
+def execute_sql(conn, query):
+	try:
+			c = conn.cursor()
+			c.execute(query)
+		except Error as e:
+			print(f"SQL error :{e}")
+			print(f"Attempted to run: {query}")
+			
+		return c
 
 def create_connection(db_file):
 	""" create a database connection to the SQLite database 
