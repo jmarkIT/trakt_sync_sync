@@ -85,33 +85,28 @@ def update_status(conn, episode_info, status="watched_status"):
 		print(f'SQL error in status_update(): {e}')
 		print(f'Attempted to run: {status_update}')
 		
-def get_latest_unwatched(show_stub):
+def get_latest_unwatched(conn, show_stub):
 		""" pull the latest episode of a given show that is available to watch and currently unwatched
 		:param show_stub: trak.tv stub of the show to search for
 		"""
-		pass
+		sql_query = f'SELECT "show_name", "season", "episode" FROM shows WHERE show_stub = "{show_stub}" AND "watched_status" = 0 ORDER BY "season", "episode"'
+		
+		try:
+			c = conn.cursor()
+			c.execute(sql_query)
+		except Error as e:
+			print(f"SQL error in get_latest_unwatched(): {e}")
+			print(f"Attempted to run: {sql_query}")
+		
+		episode_list = c.fetchall()
+		
+		return episode_list
 		
 
 if __name__ == "__main__":
 	conn = create_connection(sqlite_file)
 	
-	create_table(conn, create_table_sql)
-	
-	episode_info_1 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 1, "watched_status" : 1, "hidden_status" : 0 }
-	
-	episode_info_2 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 2, "watched_status" : 0, "hidden_status" : 0 }
-	
-	episode_info_3 = { "show_stub": "tick_2017", "show_name" : "The Tick", "season" : 2, "episode" : 1, "watched_status" : 1, "hidden_status" : 1 }
-	
-	episode_list = [episode_info_1, episode_info_2, episode_info_3]
-	
-	for episode in episode_list:
-		insert_row(conn, episode)
-		
-	episode_info_4 = { "show_stub": "game-of-thrones", "show_name" : "Game of Thrones", "season" : 1, "episode" : 2, "watched_status" : 1, "hidden_status" : 1 }
-	
-	update_status(conn, episode_info_4)
-	update_status(conn, episode_info_4, "hidden_status")
+	print(get_latest_unwatched(conn, 'game-of-thrones'))
 	
 	conn.commit()
 	conn.close()
