@@ -8,7 +8,8 @@ p_key_column = "p_key"
 stub_column = "show_stub"
 show_column = "show_name"
 season_column = "season"
-episode_column = "episode"
+episode_number_column = "episode_number"
+episode_title_column = "episode_title"
 watched_status_column = "watched_status"
 hidden_status_column = "hidden_status"
 
@@ -17,7 +18,8 @@ create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{stub_column} TEXT, ' \
 									 f'{show_column} TEXT, ' \
 									 f'{season_column} INTEGER, ' \
-									 f'{episode_column} INTEGER, ' \
+									 f'{episode_number_column} INTEGER, ' \
+									 f'{episode_title_column} TEXT, ' \
 									 f'{watched_status_column} INTEGER, ' \
 									 f'{hidden_status_column} INTEGER)'
 
@@ -61,7 +63,7 @@ def insert_row(conn, episode_info):
 	"""
 	p_key = get_p_key(episode_info)
 	
-	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
+	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode_number, episode_title watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode_number"]}, {episode_info["episode_title"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
 	
 	execute_sql(conn, insert_statement)
 		
@@ -83,7 +85,7 @@ def get_latest_unwatched(conn, show_stub):
 		""" pull the latest episode of a given show that is available to watch and currently unwatched
 		:param show_stub: trak.tv stub of the show to search for
 		"""
-		sql_query = f'SELECT "show_name", "season", "episode" FROM shows WHERE show_stub = "{show_stub}" AND "watched_status" = 0 ORDER BY "season", "episode"'
+		sql_query = f'SELECT "show_name", "season", "episode_number", "episode_title" FROM shows WHERE show_stub = "{show_stub}" AND "watched_status" = 0 ORDER BY "season", "episode"'
 		
 		episode_list = execute_sql(conn, sql_query).fetchall()
 		
