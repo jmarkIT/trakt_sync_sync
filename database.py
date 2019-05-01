@@ -63,11 +63,7 @@ def insert_row(conn, episode_info):
 	
 	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode, watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
 	
-	try:
-		c = conn.cursor()
-		c.execute(insert_statement)
-	except Error as e:
-		print(f'Error in insert_row(): {e}')
+	execute_sql(conn, insert_statement)
 		
 
 def update_status(conn, episode_info, status="watched_status"):
@@ -82,12 +78,6 @@ def update_status(conn, episode_info, status="watched_status"):
 	
 	execute_sql(conn, status_update)
 	
-	try:
-		c = conn.cursor()
-		c.execute(status_update)
-	except Error as e:
-		print(f'SQL error in status_update(): {e}')
-		print(f'Attempted to run: {status_update}')
 		
 def get_latest_unwatched(conn, show_stub):
 		""" pull the latest episode of a given show that is available to watch and currently unwatched
