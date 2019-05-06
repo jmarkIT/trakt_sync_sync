@@ -5,7 +5,7 @@ sqlite_file = "trakt_shows.db"
 table_name = "shows"
 
 p_key_column = "p_key"
-stub_column = "show_stub"
+slug_column = "show_slug"
 show_column = "show_name"
 season_column = "season"
 episode_number_column = "episode_number"
@@ -15,7 +15,7 @@ hidden_status_column = "hidden_status"
 
 create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{p_key_column} TEXT PRIMARY KEY, ' \
-									 f'{stub_column} TEXT, ' \
+									 f'{slug_column} TEXT, ' \
 									 f'{show_column} TEXT, ' \
 									 f'{season_column} INTEGER, ' \
 									 f'{episode_number_column} INTEGER, ' \
@@ -27,7 +27,7 @@ def get_p_key(episode_info):
 	""" create the primary key field by concatenating episode information
 	:param episode_info: Dictionary of a single episode
 	"""
-	return f'{episode_info["show_stub"]}S{episode_info["season"]}E{episode_info["episode"]}'
+	return f'{episode_info["show_slug"]}S{episode_info["season"]}E{episode_info["episode"]}'
 	
 
 def execute_sql(conn, query):
@@ -63,7 +63,7 @@ def insert_row(conn, episode_info):
 	"""
 	p_key = get_p_key(episode_info)
 	
-	insert_statement = f'INSERT INTO shows (p_key, show_stub, show_name, season, episode_number, episode_title watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_stub"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode_number"]}, {episode_info["episode_title"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
+	insert_statement = f'INSERT INTO shows (p_key, show_slug, show_name, season, episode_number, episode_title watched_status, hidden_status) VALUES (\"{p_key}\", \"{episode_info["show_slug"]}\", \"{episode_info["show_name"]}\", {episode_info["season"]}, {episode_info["episode_number"]}, {episode_info["episode_title"]}, {episode_info["watched_status"]}, {episode_info["hidden_status"]});'
 	
 	execute_sql(conn, insert_statement)
 		
@@ -81,11 +81,11 @@ def update_status(conn, episode_info, status="watched_status"):
 	execute_sql(conn, status_update)
 	
 		
-def get_latest_unwatched(conn, show_stub):
+def get_latest_unwatched(conn, show_slug):
 		""" pull the latest episode of a given show that is available to watch and currently unwatched
-		:param show_stub: trak.tv stub of the show to search for
+		:param show_slug: trak.tv slug of the show to search for
 		"""
-		sql_query = f'SELECT "show_name", "season", "episode_number", "episode_title" FROM shows WHERE show_stub = "{show_stub}" AND "watched_status" = 0 ORDER BY "season", "episode"'
+		sql_query = f'SELECT "show_name", "season", "episode_number", "episode_title" FROM shows WHERE show_slug = "{show_slug}" AND "watched_status" = 0 ORDER BY "season", "episode"'
 		
 		episode_list = execute_sql(conn, sql_query).fetchall()
 		
