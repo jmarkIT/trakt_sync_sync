@@ -48,6 +48,10 @@ def get_progress(url, headers):
     	
     	print(episodes)
 
+def full_update():
+	#TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
+	# for each show using get_progress
+	pass
 
 if __name__ == '__main__':
     #show_progress_data = get_progress(get_progress_url, headers)
