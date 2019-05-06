@@ -41,12 +41,15 @@ def get_progress(url, headers):
     
     seasons = show_progress['seasons']
     
+    episode_info = []
+    
     for season in seasons:
     	season_number = season['number']
     	
     	episodes = season['episodes']
     	
-    	print(episodes)
+    	for episode in episodes:
+    		print(episode)
 
 def full_update():
 	#TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
@@ -54,10 +57,9 @@ def full_update():
 	pass
 
 if __name__ == '__main__':
-    #show_progress_data = get_progress(get_progress_url, headers)
+    show_progress_data = get_progress(get_progress_url, headers)
     
     show_sync_data = get_shows("https://api.trakt.tv/sync/watched/shows", headers)
 
-    #print(show_progress_data)
-    for title in show_sync_data:
-    	print(title)
+ 
+    
