@@ -17,6 +17,8 @@ headers = {
     "Authorization": "Bearer {}".format(access_token)
 }
 
+def create_progress_url(slug):
+    return f"https://api.trakt.tv/shows/{slug}/progress/watched"
 
 def get_shows(url, headers):
     r = requests.get(url, headers=headers)
@@ -54,12 +56,14 @@ def get_progress(url, headers):
 def full_update():
 	#TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
 	# for each show using get_progress
-	pass
+    conn = database.create_connection("trakt_shows.db")
+
+    all_shows = get_shows(get_shows_url, headers)
+
+    return None
+    
 
 if __name__ == '__main__':
     show_progress_data = get_progress(get_progress_url, headers)
     
     show_sync_data = get_shows("https://api.trakt.tv/sync/watched/shows", headers)
-
- 
-    
