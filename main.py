@@ -56,14 +56,19 @@ def get_progress(url, headers):
 def full_update():
 	#TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
 	# for each show using get_progress
-    conn = database.create_connection("trakt_shows.db")
+    #conn = database.create_connection("trakt_shows.db")
 
-    all_shows = get_shows(get_shows_url, headers)
+    all_shows = get_shows(api_url + get_shows_url, headers)
+
+    for show in all_shows:
+        url = create_progress_url(show)
+        
 
     return None
     
 
 if __name__ == '__main__':
-    show_progress_data = get_progress(get_progress_url, headers)
+    #show_progress_data = get_progress(create_progress_url("game-of-thrones"), headers)
     
-    show_sync_data = get_shows("https://api.trakt.tv/sync/watched/shows", headers)
+    #show_sync_data = get_shows("https://api.trakt.tv/sync/watched/shows", headers)
+    full_update()
