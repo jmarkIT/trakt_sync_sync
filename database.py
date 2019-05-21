@@ -20,14 +20,14 @@ create_table_sql = f'CREATE TABLE {table_name} (' \
 									 f'{season_column} INTEGER, ' \
 									 f'{episode_number_column} INTEGER, ' \
 									 f'{episode_title_column} TEXT, ' \
-									 f'{watched_status_column} INTEGER, ' \
-									 f'{hidden_status_column} INTEGER)'
+									 f'{watched_status_column} TEXT, ' \
+									 f'{hidden_status_column} TEXT)'
 
 def get_p_key(episode_info):
 	""" create the primary key field by concatenating episode information
 	:param episode_info: Dictionary of a single episode
 	"""
-	return f'{episode_info["show_slug"]}S{episode_info["season"]}E{episode_info["episode"]}'
+	return f'{episode_info["show_slug"]}S{episode_info["season"]}E{episode_info["episode_title"]}'
 	
 
 def execute_sql(conn, query):
@@ -95,7 +95,6 @@ def get_latest_unwatched(conn, show_slug):
 if __name__ == "__main__":
 	conn = create_connection(sqlite_file)
 	
-	print(get_latest_unwatched(conn, 'game-of-thrones'))
-	
+	execute_sql(conn, create_table_sql)
 	conn.commit()
 	conn.close()

@@ -26,49 +26,61 @@ def get_shows(url, headers):
     show_list = []
     shows = r.json()
     
-    #print(shows)
     
     for show in shows:
-    	if show["show"]["ids"]["slug"] not in show_list:
-    		show_list.append(show["show"]["ids"]["slug"])
+        if show["show"]["ids"]["slug"] not in show_list:
+            show_list.append(show["show"]["ids"]["slug"])
     
     
-    return show_list	
+    return show_list    
 
 
-def get_progress(url, headers):
+def get_progress(slug, headers):
+    url = create_progress_url(slug)
     r = requests.get(url, headers=headers)
     show_progress = r.json()
-    print(len(show_progress['seasons']))
-    
     seasons = show_progress['seasons']
     
     episode_info = []
     
     for season in seasons:
-    	season_number = season['number']
-    	
-    	episodes = season['episodes']
-    	
-    	for episode in episodes:
-    		print(episode)
+        season_number = season['number']
+        
+        episodes = season['episodes']
+        
+        for episode in episodes:
+            episode_details = {
+                "show_slug": slug,
+                "show_name": "dummy",
+                "season": season_number,
+                "episode_title": "dummy",
+                "episode_number": episode["number"],
+                "watched_status": episode["completed"],
+                "hidden_status": "False"
+            }
 
-def full_update():
-	#TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
-	# for each show using get_progress
+            episode_info.append(episode_details)
+    return episode_info
+
+
+def full_update(conn):
+    #TODO: this function should call get_shows to get a list of shows, then use that list to pull relevant information
+    # for each show using get_progress
     #conn = database.create_connection("trakt_shows.db")
 
     all_shows = get_shows(api_url + get_shows_url, headers)
-
     for show in all_shows:
-        url = create_progress_url(show)
+        show_info = get_progress(show, headers)
+        for episode_info in show_info:
+            database.insert_row(conn, episode_info)
+
         
 
     return None
     
 
 if __name__ == '__main__':
-    #show_progress_data = get_progress(create_progress_url("game-of-thrones"), headers)
-    
+    #show_progress_data = get_progress("game-of-thrones", headers)
     #show_sync_data = get_shows("https://api.trakt.tv/sync/watched/shows", headers)
-    full_update()
+    conn = database.create_connection("trakt_shows.db")
+    full_update(conn)
