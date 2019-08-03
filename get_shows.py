@@ -1,6 +1,12 @@
 import requests
 import json
-from client import client_id, access_token
+import yaml
+
+with open('secrets.yaml', 'r') as stream:
+    data = yaml.safe_load(stream)
+    client_id = data['client_id']
+    client_secret = data['client_secret']
+    access_token = data['token']['access']
 
 api_url = "https://api.trakt.tv/"
 
