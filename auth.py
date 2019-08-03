@@ -1,8 +1,12 @@
 import requests
 import json
 import time
-from client import client_id, client_secret
+import yaml
 
+with open('secrets.yaml', 'r') as stream:
+    data = yaml.safe_load(stream)
+    client_id = data["client_id"]
+    client_secret = data ["client_secret"]
 
 url = 'https://api.trakt.tv/oauth/device/code'
 
