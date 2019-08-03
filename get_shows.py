@@ -5,6 +5,7 @@ import yaml
 with open('secrets.yaml', 'r') as stream:
     data = yaml.safe_load(stream)
     client_id = data['client_id']
+    # This part is temporary, will replace with pickle probably
     client_secret = data['client_secret']
     access_token = data['token']['access']
 
