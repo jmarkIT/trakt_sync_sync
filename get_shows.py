@@ -33,7 +33,10 @@ def get_progress(url, headers):
     return r.json()
 
 
-if __name__ == '__main__':
+def main():
     show_progress_data = get_progress(get_progress_url, headers)
-
+    
     print(show_progress_data)
+
+if __name__ == '__main__':
+    main()
